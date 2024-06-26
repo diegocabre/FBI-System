@@ -1,13 +1,79 @@
+/* style.css */
+
 * {
   margin: 0;
   padding: 0;
+  box-sizing: border-box; /* Asegura que el padding y border no afecten el tamaño total del elemento */
 }
+
 body {
-  background: black;
-  color: white;
+  background-color: #1a1a1a; /* Fondo negro oscuro */
+  color: #fff; /* Texto blanco */
+  font-family: Arial, sans-serif; /* Fuente del texto */
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  height: 60vh;
+  height: 100vh; /* Tamaño completo de la pantalla */
+}
+
+.password {
+  color: #dc3545;
+}
+
+.email {
+  color: #dc3545;
+}
+
+h1 {
+  font-size: 3rem; /* Tamaño grande para el título principal */
+  margin-bottom: 20px; /* Espacio inferior */
+}
+
+.card {
+  background-color: #333; /* Fondo oscuro para la tarjeta */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra sutil */
+  width: 300px; /* Ancho fijo */
+  text-align: center; /* Centrado del contenido */
+}
+
+.card-title {
+  color: #fff; /* Texto blanco */
+  font-size: 1.5rem; /* Tamaño del título */
+  margin-bottom: 15px; /* Espacio inferior */
+}
+
+.form-control {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #666; /* Borde gris */
+  margin-bottom: 15px; /* Espacio inferior */
+  background-color: #444; /* Fondo gris oscuro para los campos */
+  color: #fff; /* Texto blanco */
+}
+
+.btn {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #007bff; /* Botón azul */
+  color: #fff; /* Texto blanco */
+  border: none; /* Sin borde */
+  cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+  transition: background-color 0.3s ease; /* Transición suave */
+}
+
+.btn:hover {
+  background-color: #0056b3; /* Color de fondo más oscuro al pasar sobre el botón */
+}
+
+.text-danger {
+  color: #dc3545; /* Texto rojo para mensajes de error */
+}
+
+#errorMessag {
+  display: none; /* Oculta el mensaje de error por defecto */
 }
