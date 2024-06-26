@@ -41,6 +41,7 @@ Contenido: Mensaje de bienvenida con el email del usuario autenticado.
 Código: 401
 Contenido: Mensaje de error si el token es inválido o ha expirado.
 [Tecnologías]
+ 
 Express.js
 JWT (JSON Web Tokens)
 HTML/CSS/JavaScript (para la interfaz de usuario

@@ -23,12 +23,15 @@ app.get("/iniciarSesion", (req, res) => {
   );
 
   if (agente) {
-    // Generar el token JWT
+    // Generar el token JWT con expiración de 1 minuto
     const token = jwt.sign(
       { email: agente.email },
       process.env.SECRET,
-      { expiresIn: "2m" } // Token expirará en 2 minutos
+      { expiresIn: "1m" } // Token expirará en 1 minuto
     );
+
+    // Calcula el tiempo de expiración en segundos
+    const expiresAt = Math.floor(Date.now() / 1000) + 60; // 60 segundos
 
     // HTML de respuesta al autenticar el agente
     res.send(`
@@ -41,29 +44,42 @@ app.get("/iniciarSesion", (req, res) => {
       </head>
       <body>
         <h1>Bienvenido, ${agente.email}</h1>
-        <a href="#" onclick="accederRutaRestringida()">Ir a la ruta restringida</a>
+        <p id="expirationInfo">Token expira en: <span id="countdown">${
+          expiresAt - Math.floor(Date.now() / 1000)
+        }</span> segundos</p>
+        <a href="#" onclick="accederRutaRestringida('${token}')">Ir a la ruta restringida</a>
+        <p id="serverResponse"></p>
         <script>
           sessionStorage.setItem('token', '${token}');
-          function accederRutaRestringida() {
-            const token = sessionStorage.getItem('token');
-            fetch('/rutaRestringida', {
-              headers: {
-                'Authorization': 'Bearer ' + token
-              }
-            })
-            .then(response => {
-              if (!response.ok) {
-                throw new Error('No autorizado');
-              }
-              return response.text();
-            })
-            .then(message => {
-              document.body.innerHTML = message;
-            })
-            .catch(error => {
-              document.body.innerHTML = \`<p>\${error.message}</p>\`;
-            });
+          let countdownInterval; // Variable para almacenar el intervalo del contador
+
+          function accederRutaRestringida(token) {
+            clearInterval(countdownInterval); // Detener el contador cuando se hace clic
+            const url = '/rutaRestringida?token=' + token;
+            window.open(url, '_blank'); // Abrir en una nueva pestaña con el token en la URL
+            // Ocultar información de expiración
+            document.getElementById('expirationInfo').style.display = 'none';
+            document.getElementById('serverResponse').innerHTML = '<p>Abriendo la ruta restringida...</p>';
           }
+
+          // Función para iniciar el contador de expiración
+          function startCountdown() {
+            const countdownElement = document.getElementById('countdown');
+            let expiresInSec = ${expiresAt - Math.floor(Date.now() / 1000)};
+
+            countdownInterval = setInterval(() => {
+              countdownElement.textContent = expiresInSec;
+              expiresInSec--;
+
+              if (expiresInSec < 0) {
+                clearInterval(countdownInterval);
+                countdownElement.textContent = '0';
+                document.getElementById('expirationInfo').textContent = 'Token ha expirado.';
+              }
+            }, 1000);
+          }
+
+          startCountdown(); // Iniciar el contador de expiración al cargar la página
         </script>
       </body>
       </html>
@@ -76,18 +92,17 @@ app.get("/iniciarSesion", (req, res) => {
 
 // Ruta restringida
 app.get("/rutaRestringida", (req, res) => {
-  const authHeader = req.headers["authorization"];
+  const token = req.query.token; // Obtener el token de la query string
 
-  if (!authHeader) {
+  if (!token) {
     return res.status(401).send("No autorizado. Token no proporcionado.");
   }
-
-  const token = authHeader.split(" ")[1];
 
   jwt.verify(token, process.env.SECRET, (err, decoded) => {
     if (err) {
       return res.status(401).send("No autorizado. Token inválido o expirado.");
     }
+    // Aquí puedes redirigir a otra página o devolver algún contenido específico
     res.send(`Bienvenido, ${decoded.email}`);
   });
 });
