@@ -1,79 +1,137 @@
-/* style.css */
+:root {
+  --text: 0 0% 8%;
+  --background: 0 0% 91%;
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box; /* Asegura que el padding y border no afecten el tamaño total del elemento */
+  --card-text: var(--background);
+  --card-background: 200 40% 87%;
+  --card-important: 200 80% 32%;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
 }
 
 body {
-  background-color: #1a1a1a; /* Fondo negro oscuro */
-  color: #fff; /* Texto blanco */
-  font-family: Arial, sans-serif; /* Fuente del texto */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  height: 100vh; /* Tamaño completo de la pantalla */
-}
-
-.password {
-  color: #dc3545;
-}
-
-.email {
-  color: #dc3545;
-}
-
-h1 {
-  font-size: 3rem; /* Tamaño grande para el título principal */
-  margin-bottom: 20px; /* Espacio inferior */
+  display: grid;
+  place-items: center;
+  color: hsl(var(--text));
+  background: hsl(var(--background));
+  font-family: monospace;
 }
 
 .card {
-  background-color: #333; /* Fondo oscuro para la tarjeta */
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra sutil */
-  width: 300px; /* Ancho fijo */
-  text-align: center; /* Centrado del contenido */
+  padding: 4rem 1.5rem;
+  background-color: hsl(var(--card-background));
+  border-radius: 0.5rem;
+  box-shadow: 2px 2px 10px 0px hsl(0 0% 8% / 0.3),
+    4px 4px 10px 0px hsl(0 0% 8% / 0.1);
 }
 
-.card-title {
-  color: #fff; /* Texto blanco */
-  font-size: 1.5rem; /* Tamaño del título */
-  margin-bottom: 15px; /* Espacio inferior */
+.card :is(h1, h2) {
+  color: hsl(var(--card-important) / 0.9);
+  text-align: center;
+  margin: 0;
 }
 
-.form-control {
-  width: 100%;
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #666; /* Borde gris */
-  margin-bottom: 15px; /* Espacio inferior */
-  background-color: #444; /* Fondo gris oscuro para los campos */
-  color: #fff; /* Texto blanco */
+.card h1 {
+  text-shadow: 2px 2px 1px hsl(var(--card-important) / 0.3);
 }
 
-.btn {
-  width: 100%;
-  padding: 10px;
-  border-radius: 5px;
-  background-color: #007bff; /* Botón azul */
-  color: #fff; /* Texto blanco */
-  border: none; /* Sin borde */
-  cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
-  transition: background-color 0.3s ease; /* Transición suave */
+.card h1 {
+  margin-block-end: 2rem;
 }
 
-.btn:hover {
-  background-color: #0056b3; /* Color de fondo más oscuro al pasar sobre el botón */
+.card h2 {
+  color: hsl(var(--card-important) / 0.7);
+  font-size: 1rem;
 }
 
-.text-danger {
-  color: #dc3545; /* Texto rojo para mensajes de error */
+.card form > :first-child {
+  margin-block-start: 1.5rem;
 }
 
-#errorMessag {
-  display: none; /* Oculta el mensaje de error por defecto */
+.card form > *:not(:last-child) {
+  margin-block-end: 1rem;
+}
+
+.card .form-section {
+  display: grid;
+  position: relative;
+}
+
+.card .form-section:has(input:is(:focus-visible)) label {
+  opacity: 0.7;
+  translate: 2px -30px;
+  z-index: 1;
+}
+
+.form-section label {
+  position: absolute;
+  top: 50%;
+  left: 2.5rem;
+  translate: 0% -50%;
+  transition: translate 100ms linear;
+}
+
+.input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.input-wrapper .svg-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.input-wrapper svg {
+  max-width: 24px;
+  aspect-ratio: 1;
+  color: hsl(var(--card-important) / 0.7);
+}
+
+.form-section input {
+  padding: 0.25rem;
+  border: none;
+  border-radius: 0.25rem;
+  font-size: 1rem;
+  font-family: inherit;
+  outline: 1px solid hsl(var(--text) / 0.2);
+}
+
+.form-section input:is(:focus-visible) {
+  outline: 2px solid hsl(0 0% 8% / 0.7);
+  outline-offset: -2px;
+}
+
+.card-button {
+  display: flex;
+  justify-content: center;
+}
+
+.card-button button {
+  --button-animation: 3px;
+  color: hsl(var(--card-text));
+  background-color: hsl(var(--card-important));
+  margin-inline: auto;
+  padding: 0.5rem 2rem;
+  border: none;
+  border-radius: 0.25rem;
+  box-shadow: var(--button-animation) var(--button-animation) 0
+    hsl(var(--card-important) / 0.3);
+  font-family: inherit;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.card-button button:is(:active) {
+  box-shadow: none;
+  translate: var(--button-animation) var(--button-animation);
 }
